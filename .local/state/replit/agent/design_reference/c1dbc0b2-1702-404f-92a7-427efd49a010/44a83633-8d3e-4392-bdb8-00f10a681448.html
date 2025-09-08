@@ -1,0 +1,703 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VegaMovies - Latest Movies & TV Shows</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'vega-dark': '#0f0f0f',
+                        'vega-darker': '#050505',
+                        'vega-gray': '#1a1a1a',
+                        'vega-blue': '#00bfff',
+                        'vega-orange': '#ff6b35',
+                        'vega-text': '#e0e0e0'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-vega-darker text-vega-text font-inter">
+    
+    <!-- @COMPONENT: Header [navigation and branding] -->
+    <header class="bg-vega-dark border-b border-gray-800 sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-4">
+                    <!-- VegaMovies logo representation with movie film icon -->
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-film text-vega-blue text-2xl"></i>
+                        <span class="text-2xl font-bold text-white">Vega<span class="text-vega-blue">Movies</span></span>
+                    </div>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="flex-1 max-w-2xl mx-8">
+                    <div class="relative">
+                        <input type="text" 
+                               placeholder="Search movies, TV shows..." 
+                               class="w-full bg-vega-gray border border-gray-700 rounded-lg px-4 py-2 pl-10 text-vega-text placeholder-gray-500 focus:border-vega-blue focus:ring-1 focus:ring-vega-blue focus:outline-none transition-colors">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="#" class="hover:text-vega-blue transition-colors">Home</a>
+                    <a href="#" class="hover:text-vega-blue transition-colors">Movies</a>
+                    <a href="#" class="hover:text-vega-blue transition-colors">TV Shows</a>
+                    <a href="#" class="hover:text-vega-blue transition-colors">Genre</a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-vega-text hover:text-vega-blue">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: Header -->
+
+    <div class="flex min-h-screen">
+        
+        <!-- @COMPONENT: Sidebar [category navigation and filters] -->
+        <aside class="w-64 bg-vega-dark border-r border-gray-800 hidden lg:block">
+            <div class="p-6">
+                <!-- Categories -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-white mb-4">Categories</h3>
+                    <div class="space-y-2">
+                        <a href="#" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-vega-gray transition-colors group">
+                            <i class="fas fa-star text-vega-orange"></i>
+                            <span class="group-hover:text-vega-blue">Bollywood Movies</span>
+                        </a>
+                        <a href="#" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-vega-gray transition-colors group">
+                            <i class="fas fa-globe text-vega-orange"></i>
+                            <span class="group-hover:text-vega-blue">Hollywood Movies</span>
+                        </a>
+                        <a href="#" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-vega-gray transition-colors group">
+                            <i class="fas fa-language text-vega-orange"></i>
+                            <span class="group-hover:text-vega-blue">Dual Audio</span>
+                        </a>
+                        <a href="#" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-vega-gray transition-colors group">
+                            <i class="fas fa-video text-vega-orange"></i>
+                            <span class="group-hover:text-vega-blue">Telugu</span>
+                        </a>
+                        <a href="#" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-vega-gray transition-colors group">
+                            <i class="fas fa-play-circle text-vega-orange"></i>
+                            <span class="group-hover:text-vega-blue">Tamil</span>
+                        </a>
+                        <a href="#" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-vega-gray transition-colors group">
+                            <i class="fas fa-tv text-vega-orange"></i>
+                            <span class="group-hover:text-vega-blue">TV Shows</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Genres -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-white mb-4">Genres</h3>
+                    <div class="space-y-2">
+                        <a href="#" class="block p-2 rounded-lg hover:bg-vega-gray hover:text-vega-blue transition-colors">Action</a>
+                        <a href="#" class="block p-2 rounded-lg hover:bg-vega-gray hover:text-vega-blue transition-colors">Adventure</a>
+                        <a href="#" class="block p-2 rounded-lg hover:bg-vega-gray hover:text-vega-blue transition-colors">Animation</a>
+                        <a href="#" class="block p-2 rounded-lg hover:bg-vega-gray hover:text-vega-blue transition-colors">Comedy</a>
+                        <a href="#" class="block p-2 rounded-lg hover:bg-vega-gray hover:text-vega-blue transition-colors">Crime</a>
+                        <a href="#" class="block p-2 rounded-lg hover:bg-vega-gray hover:text-vega-blue transition-colors">Drama</a>
+                        <a href="#" class="block p-2 rounded-lg hover:bg-vega-gray hover:text-vega-blue transition-colors">Horror</a>
+                        <a href="#" class="block p-2 rounded-lg hover:bg-vega-gray hover:text-vega-blue transition-colors">Romance</a>
+                        <a href="#" class="block p-2 rounded-lg hover:bg-vega-gray hover:text-vega-blue transition-colors">Thriller</a>
+                    </div>
+                </div>
+
+                <!-- Quality Filter -->
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Quality</h3>
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-2 cursor-pointer hover:text-vega-blue transition-colors">
+                            <input type="checkbox" class="rounded border-gray-600 bg-vega-gray text-vega-blue focus:ring-vega-blue">
+                            <span>1080p</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer hover:text-vega-blue transition-colors">
+                            <input type="checkbox" class="rounded border-gray-600 bg-vega-gray text-vega-blue focus:ring-vega-blue">
+                            <span>720p</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer hover:text-vega-blue transition-colors">
+                            <input type="checkbox" class="rounded border-gray-600 bg-vega-gray text-vega-blue focus:ring-vega-blue">
+                            <span>480p</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <!-- @END_COMPONENT: Sidebar -->
+
+        <!-- @COMPONENT: MainContent [movie grid and featured content] -->
+        <main class="flex-1 p-6">
+            
+            <!-- Featured Section -->
+            <section class="mb-8">
+                <div class="bg-gradient-to-r from-vega-blue/20 to-vega-orange/20 rounded-2xl p-8 border border-gray-800">
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="flex-1 mb-6 md:mb-0">
+                            <h2 class="text-3xl font-bold text-white mb-4">Latest Movies & TV Shows</h2>
+                            <p class="text-vega-text mb-6">Watch the latest Bollywood, Hollywood, and regional movies in HD quality. Stream or download your favorite content.</p>
+                            <div class="flex flex-wrap gap-3 mb-4">
+                                <span class="px-3 py-1 bg-vega-blue/20 text-vega-blue rounded-full text-sm font-medium">HD Quality</span>
+                                <span class="px-3 py-1 bg-vega-orange/20 text-vega-orange rounded-full text-sm font-medium">Dual Audio</span>
+                                <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm font-medium">Latest Updates</span>
+                            </div>
+                        </div>
+                        <!-- Hero movie poster placeholder -->
+                        <div class="w-full md:w-64 h-80 bg-vega-gray rounded-xl border border-gray-700 flex items-center justify-center">
+                            <!-- A dramatic action movie poster featuring an explosion scene -->
+                            <img src="https://pixabay.com/get/g727fc36572f779cd09128e37879a2071b83d2dfe5b0ed568aa7a1f3ba975739b1210668b4846ab7d0ecb614c3f32b7cb_1280.jpg" 
+                                 alt="Featured movie poster" 
+                                 class="w-full h-full object-cover rounded-xl">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Filter and Sort Bar -->
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                <div class="flex items-center space-x-4">
+                    <h2 class="text-xl font-semibold text-white">Latest Movies</h2>
+                    <span class="text-sm text-gray-500"><!-- @BIND: totalMovies -->12,000+</span> <span class="text-sm text-gray-500">movies available</span>
+                </div>
+                
+                <div class="flex items-center space-x-3">
+                    <select class="bg-vega-gray border border-gray-700 rounded-lg px-3 py-2 text-vega-text focus:border-vega-blue focus:ring-1 focus:ring-vega-blue focus:outline-none">
+                        <option>Sort by Latest</option>
+                        <option>Sort by Rating</option>
+                        <option>Sort by Year</option>
+                        <option>Sort by Name</option>
+                    </select>
+                    
+                    <div class="flex border border-gray-700 rounded-lg overflow-hidden">
+                        <button class="px-3 py-2 bg-vega-blue text-white">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button class="px-3 py-2 bg-vega-gray hover:bg-gray-600 transition-colors">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- @MAP: movies.map(movie => ( -->
+            <!-- Movie Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-8">
+                
+                <!-- Movie Card 1 - Ghost Project -->
+                <div class="group cursor-pointer transform hover:scale-105 transition-all duration-300">
+                    <div class="relative bg-vega-gray rounded-xl overflow-hidden border border-gray-800 hover:border-vega-blue/50">
+                        <!-- Action thriller movie poster with dark atmosphere -->
+                        <img src="https://pixabay.com/get/g28e14ec483e0ba23352f77092ed16129eacf598ac8fac12bacd9d315e2759661c4392e1eb577001050878ece60fcc2fa118d2b9c708df02c5d8f728cacc79cf4_1280.jpg" 
+                             alt="Ghost Project movie poster" 
+                             class="w-full h-72 object-cover">
+                        
+                        <!-- Quality Badge -->
+                        <div class="absolute top-2 left-2 bg-vega-blue/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            1080p
+                        </div>
+                        
+                        <!-- Language Badge -->
+                        <div class="absolute top-2 right-2 bg-vega-orange/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            Dual Audio
+                        </div>
+                        
+                        <!-- Hover Overlay -->
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fas fa-play-circle text-4xl text-vega-blue mb-2"></i>
+                                <p class="text-sm text-white">Watch Now</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <h3 class="font-semibold text-white mb-1 group-hover:text-vega-blue transition-colors" data-bind="movie.title">Ghost Project</h3>
+                        <p class="text-sm text-gray-500 mb-2" data-bind="movie.year">2023</p>
+                        <div class="flex items-center justify-between text-xs text-gray-400">
+                            <span>Action, Thriller</span>
+                            <span class="flex items-center">
+                                <i class="fas fa-star text-yellow-500 mr-1"></i>
+                                7.2
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Movie Card 2 - Mission Impossible -->
+                <div class="group cursor-pointer transform hover:scale-105 transition-all duration-300">
+                    <div class="relative bg-vega-gray rounded-xl overflow-hidden border border-gray-800 hover:border-vega-blue/50">
+                        <!-- High-octane action movie poster with explosions and stunts -->
+                        <img src="https://images.unsplash.com/photo-1594737626072-90dc274bc2bd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=600" 
+                             alt="Mission Impossible movie poster" 
+                             class="w-full h-72 object-cover">
+                        
+                        <div class="absolute top-2 left-2 bg-vega-blue/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            1080p
+                        </div>
+                        <div class="absolute top-2 right-2 bg-vega-orange/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            Dual Audio
+                        </div>
+                        
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fas fa-play-circle text-4xl text-vega-blue mb-2"></i>
+                                <p class="text-sm text-white">Watch Now</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <h3 class="font-semibold text-white mb-1 group-hover:text-vega-blue transition-colors">Mission: Impossible – The Final Reckoning</h3>
+                        <p class="text-sm text-gray-500 mb-2">2025</p>
+                        <div class="flex items-center justify-between text-xs text-gray-400">
+                            <span>Action, Adventure</span>
+                            <span class="flex items-center">
+                                <i class="fas fa-star text-yellow-500 mr-1"></i>
+                                8.5
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Movie Card 3 - Superman -->
+                <div class="group cursor-pointer transform hover:scale-105 transition-all duration-300">
+                    <div class="relative bg-vega-gray rounded-xl overflow-hidden border border-gray-800 hover:border-vega-blue/50">
+                        <!-- Superhero movie poster with cape and heroic pose -->
+                        <img src="https://images.unsplash.com/photo-1635805737707-575885ab0820?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=600" 
+                             alt="Superman movie poster" 
+                             class="w-full h-72 object-cover">
+                        
+                        <div class="absolute top-2 left-2 bg-vega-blue/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            1080p
+                        </div>
+                        <div class="absolute top-2 right-2 bg-vega-orange/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            Dual Audio
+                        </div>
+                        
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fas fa-play-circle text-4xl text-vega-blue mb-2"></i>
+                                <p class="text-sm text-white">Watch Now</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <h3 class="font-semibold text-white mb-1 group-hover:text-vega-blue transition-colors">Superman</h3>
+                        <p class="text-sm text-gray-500 mb-2">2025</p>
+                        <div class="flex items-center justify-between text-xs text-gray-400">
+                            <span>Action, Sci-Fi</span>
+                            <span class="flex items-center">
+                                <i class="fas fa-star text-yellow-500 mr-1"></i>
+                                8.0
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Movie Card 4 - Baaghi 3 -->
+                <div class="group cursor-pointer transform hover:scale-105 transition-all duration-300">
+                    <div class="relative bg-vega-gray rounded-xl overflow-hidden border border-gray-800 hover:border-vega-blue/50">
+                        <!-- Bollywood action movie poster with intense dramatic lighting -->
+                        <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=600" 
+                             alt="Baaghi 3 movie poster" 
+                             class="w-full h-72 object-cover">
+                        
+                        <div class="absolute top-2 left-2 bg-vega-blue/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            720p
+                        </div>
+                        <div class="absolute top-2 right-2 bg-green-500/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            Hindi
+                        </div>
+                        
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fas fa-play-circle text-4xl text-vega-blue mb-2"></i>
+                                <p class="text-sm text-white">Watch Now</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <h3 class="font-semibold text-white mb-1 group-hover:text-vega-blue transition-colors">Baaghi 3</h3>
+                        <p class="text-sm text-gray-500 mb-2">2020</p>
+                        <div class="flex items-center justify-between text-xs text-gray-400">
+                            <span>Action, Drama</span>
+                            <span class="flex items-center">
+                                <i class="fas fa-star text-yellow-500 mr-1"></i>
+                                6.8
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Movie Card 5 - War 2 -->
+                <div class="group cursor-pointer transform hover:scale-105 transition-all duration-300">
+                    <div class="relative bg-vega-gray rounded-xl overflow-hidden border border-gray-800 hover:border-vega-blue/50">
+                        <!-- Action war movie poster with military theme -->
+                        <img src="https://pixabay.com/get/g00d19e304bb8321b11ee7d5625291fcf574babe7a888bc17c0a18eb0460c81c301467f47449ebf4a86103f3cd4a6b187d538959a959d2e526d004f1c2d16ef2e_1280.jpg" 
+                             alt="War 2 movie poster" 
+                             class="w-full h-72 object-cover">
+                        
+                        <div class="absolute top-2 left-2 bg-vega-blue/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            1080p
+                        </div>
+                        <div class="absolute top-2 right-2 bg-green-500/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            Hindi
+                        </div>
+                        
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fas fa-play-circle text-4xl text-vega-blue mb-2"></i>
+                                <p class="text-sm text-white">Watch Now</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <h3 class="font-semibold text-white mb-1 group-hover:text-vega-blue transition-colors">War 2</h3>
+                        <p class="text-sm text-gray-500 mb-2">2025</p>
+                        <div class="flex items-center justify-between text-xs text-gray-400">
+                            <span>Action, Thriller</span>
+                            <span class="flex items-center">
+                                <i class="fas fa-star text-yellow-500 mr-1"></i>
+                                8.3
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Movie Card 6 - Watchmen -->
+                <div class="group cursor-pointer transform hover:scale-105 transition-all duration-300">
+                    <div class="relative bg-vega-gray rounded-xl overflow-hidden border border-gray-800 hover:border-vega-blue/50">
+                        <!-- Dark superhero movie poster with noir aesthetic -->
+                        <img src="https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=600" 
+                             alt="Watchmen Chapter I poster" 
+                             class="w-full h-72 object-cover">
+                        
+                        <div class="absolute top-2 left-2 bg-vega-blue/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            1080p
+                        </div>
+                        <div class="absolute top-2 right-2 bg-vega-orange/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            Dual Audio
+                        </div>
+                        
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fas fa-play-circle text-4xl text-vega-blue mb-2"></i>
+                                <p class="text-sm text-white">Watch Now</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <h3 class="font-semibold text-white mb-1 group-hover:text-vega-blue transition-colors">Watchmen: Chapter I</h3>
+                        <p class="text-sm text-gray-500 mb-2">2024</p>
+                        <div class="flex items-center justify-between text-xs text-gray-400">
+                            <span>Action, Drama</span>
+                            <span class="flex items-center">
+                                <i class="fas fa-star text-yellow-500 mr-1"></i>
+                                7.9
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Movie Card 7 - Think Like a Man -->
+                <div class="group cursor-pointer transform hover:scale-105 transition-all duration-300">
+                    <div class="relative bg-vega-gray rounded-xl overflow-hidden border border-gray-800 hover:border-vega-blue/50">
+                        <!-- Romantic comedy movie poster with warm lighting -->
+                        <img src="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=600" 
+                             alt="Think Like a Man movie poster" 
+                             class="w-full h-72 object-cover">
+                        
+                        <div class="absolute top-2 left-2 bg-vega-blue/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            720p
+                        </div>
+                        <div class="absolute top-2 right-2 bg-vega-orange/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            Dual Audio
+                        </div>
+                        
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fas fa-play-circle text-4xl text-vega-blue mb-2"></i>
+                                <p class="text-sm text-white">Watch Now</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <h3 class="font-semibold text-white mb-1 group-hover:text-vega-blue transition-colors">Think Like a Man</h3>
+                        <p class="text-sm text-gray-500 mb-2">2012</p>
+                        <div class="flex items-center justify-between text-xs text-gray-400">
+                            <span>Comedy, Romance</span>
+                            <span class="flex items-center">
+                                <i class="fas fa-star text-yellow-500 mr-1"></i>
+                                6.5
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Movie Card 8 - Elio -->
+                <div class="group cursor-pointer transform hover:scale-105 transition-all duration-300">
+                    <div class="relative bg-vega-gray rounded-xl overflow-hidden border border-gray-800 hover:border-vega-blue/50">
+                        <!-- Animated adventure movie poster with space theme -->
+                        <img src="https://images.unsplash.com/photo-1446776877081-d282a0f896e2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=600" 
+                             alt="Elio animated movie poster" 
+                             class="w-full h-72 object-cover">
+                        
+                        <div class="absolute top-2 left-2 bg-vega-blue/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            1080p
+                        </div>
+                        <div class="absolute top-2 right-2 bg-vega-orange/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            Dual Audio
+                        </div>
+                        
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fas fa-play-circle text-4xl text-vega-blue mb-2"></i>
+                                <p class="text-sm text-white">Watch Now</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <h3 class="font-semibold text-white mb-1 group-hover:text-vega-blue transition-colors">Elio</h3>
+                        <p class="text-sm text-gray-500 mb-2">2025</p>
+                        <div class="flex items-center justify-between text-xs text-gray-400">
+                            <span>Animation, Adventure</span>
+                            <span class="flex items-center">
+                                <i class="fas fa-star text-yellow-500 mr-1"></i>
+                                7.8
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Movie Card 9 - Love All -->
+                <div class="group cursor-pointer transform hover:scale-105 transition-all duration-300">
+                    <div class="relative bg-vega-gray rounded-xl overflow-hidden border border-gray-800 hover:border-vega-blue/50">
+                        <!-- Tennis sports movie poster with court background -->
+                        <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=600" 
+                             alt="Love All sports movie poster" 
+                             class="w-full h-72 object-cover">
+                        
+                        <div class="absolute top-2 left-2 bg-vega-blue/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            720p
+                        </div>
+                        <div class="absolute top-2 right-2 bg-green-500/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            Hindi
+                        </div>
+                        
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fas fa-play-circle text-4xl text-vega-blue mb-2"></i>
+                                <p class="text-sm text-white">Watch Now</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <h3 class="font-semibold text-white mb-1 group-hover:text-vega-blue transition-colors">Love All</h3>
+                        <p class="text-sm text-gray-500 mb-2">2023</p>
+                        <div class="flex items-center justify-between text-xs text-gray-400">
+                            <span>Sports, Drama</span>
+                            <span class="flex items-center">
+                                <i class="fas fa-star text-yellow-500 mr-1"></i>
+                                7.1
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Movie Card 10 - Coolie -->
+                <div class="group cursor-pointer transform hover:Scale-105 transition-all duration-300">
+                    <div class="relative bg-vega-gray rounded-xl overflow-hidden border border-gray-800 hover:border-vega-blue/50">
+                        <!-- Action drama movie poster with vintage train setting -->
+                        <img src="https://pixabay.com/get/g9de7b303b795634db631314e179149425b509fbbe06d6c3e7c7a0003d4210c5083cf66b742127a09920eb0c504e7671d6ed447f9f01ecd6e0644e8d8dd7b4336_1280.jpg" 
+                             alt="Coolie movie poster" 
+                             class="w-full h-72 object-cover">
+                        
+                        <div class="absolute top-2 left-2 bg-vega-blue/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            720p
+                        </div>
+                        <div class="absolute top-2 right-2 bg-green-500/90 backdrop-blur px-2 py-1 rounded text-xs font-semibold text-white">
+                            Hindi
+                        </div>
+                        
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fas fa-play-circle text-4xl text-vega-blue mb-2"></i>
+                                <p class="text-sm text-white">Watch Now</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <h3 class="font-semibold text-white mb-1 group-hover:text-vega-blue transition-colors">Coolie</h3>
+                        <p class="text-sm text-gray-500 mb-2">2025</p>
+                        <div class="flex items-center justify-between text-xs text-gray-400">
+                            <span>Action, Drama</span>
+                            <span class="flex items-center">
+                                <i class="fas fa-star text-yellow-500 mr-1"></i>
+                                7.6
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- @END_MAP )) -->
+
+            <!-- Pagination -->
+            <div class="flex justify-center items-center space-x-2 mt-8">
+                <button class="px-3 py-2 bg-vega-gray hover:bg-gray-600 text-vega-text rounded-lg transition-colors">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <button class="px-4 py-2 bg-vega-blue text-white rounded-lg">1</button>
+                <button class="px-4 py-2 bg-vega-gray hover:bg-gray-600 text-vega-text rounded-lg transition-colors">2</button>
+                <button class="px-4 py-2 bg-vega-gray hover:bg-gray-600 text-vega-text rounded-lg transition-colors">3</button>
+                <button class="px-4 py-2 bg-vega-gray hover:bg-gray-600 text-vega-text rounded-lg transition-colors">4</button>
+                <button class="px-4 py-2 bg-vega-gray hover:bg-gray-600 text-vega-text rounded-lg transition-colors">5</button>
+                <span class="px-4 py-2 text-gray-500">...</span>
+                <button class="px-4 py-2 bg-vega-gray hover:bg-gray-600 text-vega-text rounded-lg transition-colors">552</button>
+                
+                <button class="px-3 py-2 bg-vega-gray hover:bg-gray-600 text-vega-text rounded-lg transition-colors">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+        </main>
+        <!-- @END_COMPONENT: MainContent -->
+    </div>
+
+    <!-- @COMPONENT: Footer [links and information] -->
+    <footer class="bg-vega-dark border-t border-gray-800 py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-film text-vega-blue text-2xl"></i>
+                        <span class="text-2xl font-bold text-white">Vega<span class="text-vega-blue">Movies</span></span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Watch and download latest movies and TV shows in HD quality. Your entertainment destination.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-vega-blue transition-colors">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-vega-blue transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-vega-blue transition-colors">
+                            <i class="fab fa-telegram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-vega-blue transition-colors">Bollywood Movies</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-vega-blue transition-colors">Hollywood Movies</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-vega-blue transition-colors">Dual Audio Movies</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-vega-blue transition-colors">TV Shows</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Categories</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-vega-blue transition-colors">Action Movies</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-vega-blue transition-colors">Comedy Movies</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-vega-blue transition-colors">Drama Movies</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-vega-blue transition-colors">Horror Movies</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Quality</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-vega-blue transition-colors">1080p Movies</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-vega-blue transition-colors">720p Movies</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-vega-blue transition-colors">480p Movies</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-vega-blue transition-colors">300MB Movies</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2025 VegaMovies. All rights reserved. This is a design mockup for demonstration purposes.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <!-- @STATE: isLoading:boolean = false -->
+    <!-- @STATE: selectedCategory:string = 'all' -->
+    <!-- @STATE: selectedGenre:string = 'all' -->
+    <!-- @STATE: currentPage:number = 1 -->
+
+    <script>
+        // TODO: Implement business logic, API calls, or state management
+        (function() {
+            // Movie search functionality
+            const searchInput = document.querySelector('input[type="text"]');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    // TODO: Implement search functionality
+                    console.log('Search query:', e.target.value);
+                });
+            }
+
+            // Category filtering
+            const categoryLinks = document.querySelectorAll('aside a');
+            categoryLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // TODO: Implement category filtering
+                    console.log('Category selected:', this.textContent);
+                });
+            });
+
+            // Movie card click handlers
+            const movieCards = document.querySelectorAll('.group.cursor-pointer');
+            movieCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // TODO: Navigate to movie detail page
+                    const movieTitle = this.querySelector('h3').textContent;
+                    console.log('Movie clicked:', movieTitle);
+                });
+            });
+
+            // Pagination handlers
+            const paginationButtons = document.querySelectorAll('.flex.justify-center button');
+            paginationButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // TODO: Implement pagination logic
+                    console.log('Page change requested');
+                });
+            });
+
+        })();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CinemaVault - Premium Movie Catalog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cinema: {
+                            black: '#0f0f0f',
+                            charcoal: '#1a1a1a',
+                            dark: '#2a2a2a',
+                            burgundy: '#8B0000',
+                            gold: '#FFD700',
+                            cream: '#F5F5DC',
+                            red: '#FF4444',
+                            silver: '#C0C0C0'
+                        }
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'sans': ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-cinema-black text-cinema-cream font-sans">
+
+    <!-- Navigation Header -->
+    <!-- @COMPONENT: NavigationHeader -->
+    <nav class="bg-cinema-charcoal border-b border-cinema-dark sticky top-0 z-50 backdrop-blur-sm bg-opacity-95">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-film text-cinema-gold text-2xl"></i>
+                    <span class="font-display text-xl font-bold text-cinema-gold">CinemaVault</span>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="hidden md:flex flex-1 max-w-lg mx-8">
+                    <div class="relative w-full">
+                        <input 
+                            type="text" 
+                            placeholder="Search movies, actors, directors..."
+                            class="w-full bg-cinema-dark text-cinema-cream pl-10 pr-4 py-2 rounded-lg border border-cinema-dark focus:border-cinema-burgundy focus:outline-none focus:ring-1 focus:ring-cinema-burgundy transition-colors"
+                            data-bind="searchQuery"
+                            data-event="input:handleSearch"
+                        >
+                        <i class="fas fa-search absolute left-3 top-2.5 text-cinema-silver"></i>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden lg:flex items-center space-x-6">
+                    <a href="#" class="text-cinema-cream hover:text-cinema-gold transition-colors">Browse</a>
+                    <a href="#" class="text-cinema-cream hover:text-cinema-gold transition-colors">My List</a>
+                    <a href="#" class="text-cinema-cream hover:text-cinema-gold transition-colors">Recently Viewed</a>
+                </div>
+
+                <!-- View Toggle & Profile -->
+                <div class="flex items-center space-x-4">
+                    <!-- @STATE: viewMode:string = 'grid' -->
+                    <div class="hidden md:flex bg-cinema-dark rounded-lg p-1">
+                        <button class="p-2 rounded text-cinema-gold bg-cinema-burgundy" data-event="click:setGridView">
+                            <i class="fas fa-th-large"></i>
+                        </button>
+                        <button class="p-2 rounded text-cinema-silver hover:text-cinema-gold transition-colors" data-event="click:setListView">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                    <div class="w-8 h-8 bg-cinema-burgundy rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-cinema-cream text-sm"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- @END_COMPONENT: NavigationHeader -->
+
+    <!-- Hero Section -->
+    <!-- @COMPONENT: HeroSection -->
+    <!-- A dramatic movie theater interior with red velvet seats and golden lighting -->
+    <section class="relative h-96 bg-cover bg-center bg-no-repeat" style="background-image: linear-gradient(rgba(15, 15, 15, 0.7), rgba(15, 15, 15, 0.7)), url('https://pixabay.com/get/gc59238344ab695d51bfada122f01bed42105bf49975004e8616049cb521aad410cf428fe231ff940d8105a54b76f20be777b9504087a1615406745e5a464ad8d_1280.jpg');">
+        <div class="container mx-auto px-4 lg:px-8 h-full flex items-center">
+            <div class="max-w-2xl">
+                <h1 class="font-display text-4xl lg:text-6xl font-bold text-cinema-gold mb-4">
+                    Discover Cinema Excellence
+                </h1>
+                <p class="text-lg lg:text-xl text-cinema-cream mb-8 leading-relaxed">
+                    Explore our curated collection of cinematic masterpieces. From timeless classics to modern blockbusters, find your next favorite film.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button class="bg-cinema-burgundy hover:bg-red-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center">
+                        <i class="fas fa-play mr-2"></i>
+                        Browse Collection
+                    </button>
+                    <button class="border border-cinema-gold text-cinema-gold hover:bg-cinema-gold hover:text-cinema-black px-8 py-3 rounded-lg font-semibold transition-all">
+                        <i class="fas fa-star mr-2"></i>
+                        Featured Movies
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: HeroSection -->
+
+    <div class="container mx-auto px-4 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- Filters Sidebar -->
+            <!-- @COMPONENT: FilterSidebar -->
+            <aside class="lg:w-80 flex-shrink-0">
+                <div class="bg-cinema-charcoal rounded-xl p-6 border border-cinema-dark">
+                    <h3 class="font-display text-xl font-semibold text-cinema-gold mb-6">Filters</h3>
+                    
+                    <!-- Genre Filter -->
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-cinema-cream mb-3">Genre</h4>
+                        <div class="space-y-2" data-bind="selectedGenres">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded bg-cinema-dark border-cinema-dark text-cinema-burgundy focus:ring-cinema-burgundy">
+                                <span class="ml-2 text-sm text-cinema-cream">Action</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded bg-cinema-dark border-cinema-dark text-cinema-burgundy focus:ring-cinema-burgundy">
+                                <span class="ml-2 text-sm text-cinema-cream">Drama</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded bg-cinema-dark border-cinema-dark text-cinema-burgundy focus:ring-cinema-burgundy">
+                                <span class="ml-2 text-sm text-cinema-cream">Comedy</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded bg-cinema-dark border-cinema-dark text-cinema-burgundy focus:ring-cinema-burgundy">
+                                <span class="ml-2 text-sm text-cinema-cream">Horror</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded bg-cinema-dark border-cinema-dark text-cinema-burgundy focus:ring-cinema-burgundy">
+                                <span class="ml-2 text-sm text-cinema-cream">Sci-Fi</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Year Range -->
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-cinema-cream mb-3">Release Year</h4>
+                        <div class="flex gap-2">
+                            <input type="number" placeholder="From" min="1900" max="2024" 
+                                class="w-20 bg-cinema-dark border border-cinema-dark rounded px-2 py-1 text-sm text-cinema-cream focus:border-cinema-burgundy focus:outline-none"
+                                data-bind="yearFrom">
+                            <span class="text-cinema-silver self-center">-</span>
+                            <input type="number" placeholder="To" min="1900" max="2024" 
+                                class="w-20 bg-cinema-dark border border-cinema-dark rounded px-2 py-1 text-sm text-cinema-cream focus:border-cinema-burgundy focus:outline-none"
+                                data-bind="yearTo">
+                        </div>
+                    </div>
+
+                    <!-- Rating Filter -->
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-cinema-cream mb-3">Minimum Rating</h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="radio" name="rating" value="9" class="text-cinema-burgundy focus:ring-cinema-burgundy">
+                                <span class="ml-2 text-sm text-cinema-cream flex items-center">
+                                    9.0+ <span class="ml-1 text-cinema-gold">★★★★★</span>
+                                </span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="rating" value="8" class="text-cinema-burgundy focus:ring-cinema-burgundy">
+                                <span class="ml-2 text-sm text-cinema-cream flex items-center">
+                                    8.0+ <span class="ml-1 text-cinema-gold">★★★★☆</span>
+                                </span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="rating" value="7" class="text-cinema-burgundy focus:ring-cinema-burgundy">
+                                <span class="ml-2 text-sm text-cinema-cream flex items-center">
+                                    7.0+ <span class="ml-1 text-cinema-gold">★★★☆☆</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Apply Filters Button -->
+                    <button class="w-full bg-cinema-burgundy hover:bg-red-700 text-white py-2 rounded-lg font-semibold transition-colors" data-event="click:applyFilters">
+                        Apply Filters
+                    </button>
+                </div>
+            </aside>
+            <!-- @END_COMPONENT: FilterSidebar -->
+
+            <!-- Main Content -->
+            <main class="flex-1">
+                
+                <!-- Results Header -->
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
+                    <div>
+                        <h2 class="font-display text-2xl lg:text-3xl font-bold text-cinema-gold mb-2">Featured Movies</h2>
+                        <p class="text-cinema-silver" data-bind="movieCount">Showing 1,247 movies</p>
+                    </div>
+                    <div class="mt-4 sm:mt-0">
+                        <select class="bg-cinema-dark border border-cinema-dark text-cinema-cream rounded-lg px-4 py-2 focus:border-cinema-burgundy focus:outline-none" data-bind="sortBy">
+                            <option value="relevance">Sort by Relevance</option>
+                            <option value="rating">Highest Rated</option>
+                            <option value="year">Release Year</option>
+                            <option value="title">Title A-Z</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Movie Grid -->
+                <!-- @COMPONENT: MovieGrid -->
+                <!-- @MAP: movies.map(movie => ( -->
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
+                    
+                    <!-- Movie Card 1 -->
+                    <div class="group cursor-pointer transform transition-all duration-300 hover:scale-105" data-event="click:openMovieDetail">
+                        <div class="relative overflow-hidden rounded-xl shadow-2xl">
+                            <!-- Classic action movie poster with dramatic lighting -->
+                            <img src="https://pixabay.com/get/g01e7fab44fe7829da433ec6e5f02ec9f347630387c7532316b122bf0b65f3d8f49b29e0d173bb8c802a8213c80f207c2268a3d9b8f84cb7b7d4caec52765c597_1280.jpg" 
+                                alt="The Dark Knight movie poster" 
+                                class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" 
+                                data-mock="true">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="absolute top-3 right-3">
+                                <div class="bg-cinema-burgundy text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center">
+                                    <i class="fas fa-star text-cinema-gold mr-1"></i>
+                                    <span data-bind="movie.rating">9.0</span>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                <h3 class="font-display text-lg font-semibold text-white mb-1" data-bind="movie.title">The Dark Knight</h3>
+                                <p class="text-cinema-cream text-sm" data-bind="movie.year">2008 • Action, Crime</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 2 -->
+                    <div class="group cursor-pointer transform transition-all duration-300 hover:scale-105" data-event="click:openMovieDetail">
+                        <div class="relative overflow-hidden rounded-xl shadow-2xl">
+                            <!-- Vintage movie poster with retro styling -->
+                            <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=600" 
+                                alt="Pulp Fiction movie poster" 
+                                class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" 
+                                data-mock="true">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="absolute top-3 right-3">
+                                <div class="bg-cinema-burgundy text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center">
+                                    <i class="fas fa-star text-cinema-gold mr-1"></i>
+                                    <span data-bind="movie.rating">8.9</span>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                <h3 class="font-display text-lg font-semibold text-white mb-1" data-bind="movie.title">Pulp Fiction</h3>
+                                <p class="text-cinema-cream text-sm" data-bind="movie.year">1994 • Crime, Drama</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 3 -->
+                    <div class="group cursor-pointer transform transition-all duration-300 hover:scale-105" data-event="click:openMovieDetail">
+                        <div class="relative overflow-hidden rounded-xl shadow-2xl">
+                            <!-- Sci-fi movie poster with futuristic elements -->
+                            <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=600" 
+                                alt="Inception movie poster" 
+                                class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" 
+                                data-mock="true">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="absolute top-3 right-3">
+                                <div class="bg-cinema-burgundy text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center">
+                                    <i class="fas fa-star text-cinema-gold mr-1"></i>
+                                    <span data-bind="movie.rating">8.8</span>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                <h3 class="font-display text-lg font-semibold text-white mb-1" data-bind="movie.title">Inception</h3>
+                                <p class="text-cinema-cream text-sm" data-bind="movie.year">2010 • Sci-Fi, Action</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 4 -->
+                    <div class="group cursor-pointer transform transition-all duration-300 hover:scale-105" data-event="click:openMovieDetail">
+                        <div class="relative overflow-hidden rounded-xl shadow-2xl">
+                            <!-- Classic drama movie poster -->
+                            <img src="https://images.unsplash.com/photo-1440404653325-ab127d49abc1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=600" 
+                                alt="The Godfather movie poster" 
+                                class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" 
+                                data-mock="true">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="absolute top-3 right-3">
+                                <div class="bg-cinema-burgundy text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center">
+                                    <i class="fas fa-star text-cinema-gold mr-1"></i>
+                                    <span data-bind="movie.rating">9.2</span>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                <h3 class="font-display text-lg font-semibold text-white mb-1" data-bind="movie.title">The Godfather</h3>
+                                <p class="text-cinema-cream text-sm" data-bind="movie.year">1972 • Crime, Drama</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 5 -->
+                    <div class="group cursor-pointer transform transition-all duration-300 hover:scale-105" data-event="click:openMovieDetail">
+                        <div class="relative overflow-hidden rounded-xl shadow-2xl">
+                            <!-- Modern superhero movie poster -->
+                            <img src="https://images.unsplash.com/photo-1478720568477-b0834d440b1b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=600" 
+                                alt="Avengers movie poster" 
+                                class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" 
+                                data-mock="true">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="absolute top-3 right-3">
+                                <div class="bg-cinema-burgundy text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center">
+                                    <i class="fas fa-star text-cinema-gold mr-1"></i>
+                                    <span data-bind="movie.rating">8.4</span>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                <h3 class="font-display text-lg font-semibold text-white mb-1" data-bind="movie.title">Avengers: Endgame</h3>
+                                <p class="text-cinema-cream text-sm" data-bind="movie.year">2019 • Action, Adventure</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 6 -->
+                    <div class="group cursor-pointer transform transition-all duration-300 hover:scale-105" data-event="click:openMovieDetail">
+                        <div class="relative overflow-hidden rounded-xl shadow-2xl">
+                            <!-- Thriller movie poster with dark atmosphere -->
+                            <img src="https://images.unsplash.com/photo-1574267432553-4b4628081c31?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=600" 
+                                alt="Shutter Island movie poster" 
+                                class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" 
+                                data-mock="true">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="absolute top-3 right-3">
+                                <div class="bg-cinema-burgundy text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center">
+                                    <i class="fas fa-star text-cinema-gold mr-1"></i>
+                                    <span data-bind="movie.rating">8.2</span>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                <h3 class="font-display text-lg font-semibold text-white mb-1" data-bind="movie.title">Shutter Island</h3>
+                                <p class="text-cinema-cream text-sm" data-bind="movie.year">2010 • Mystery, Thriller</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 7 -->
+                    <div class="group cursor-pointer transform transition-all duration-300 hover:scale-105" data-event="click:openMovieDetail">
+                        <div class="relative overflow-hidden rounded-xl shadow-2xl">
+                            <!-- Comedy movie poster with bright colors -->
+                            <img src="https://pixabay.com/get/gfd8d2be101cc80d631df26248ed13c1354fef34c1bacbee7faf105818501d6d9929d1fe95b32c162ac7a24d10a7917d0526961f6cd0ccf39a7352402ccc1a3f4_1280.jpg" 
+                                alt="The Grand Budapest Hotel movie poster" 
+                                class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" 
+                                data-mock="true">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="absolute top-3 right-3">
+                                <div class="bg-cinema-burgundy text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center">
+                                    <i class="fas fa-star text-cinema-gold mr-1"></i>
+                                    <span data-bind="movie.rating">8.1</span>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                <h3 class="font-display text-lg font-semibold text-white mb-1" data-bind="movie.title">The Grand Budapest Hotel</h3>
+                                <p class="text-cinema-cream text-sm" data-bind="movie.year">2014 • Comedy, Drama</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 8 -->
+                    <div class="group cursor-pointer transform transition-all duration-300 hover:scale-105" data-event="click:openMovieDetail">
+                        <div class="relative overflow-hidden rounded-xl shadow-2xl">
+                            <!-- Horror movie poster with dark theme -->
+                            <img src="https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=600" 
+                                alt="Get Out movie poster" 
+                                class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500" 
+                                data-mock="true">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div class="absolute top-3 right-3">
+                                <div class="bg-cinema-burgundy text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center">
+                                    <i class="fas fa-star text-cinema-gold mr-1"></i>
+                                    <span data-bind="movie.rating">7.7</span>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                <h3 class="font-display text-lg font-semibold text-white mb-1" data-bind="movie.title">Get Out</h3>
+                                <p class="text-cinema-cream text-sm" data-bind="movie.year">2017 • Horror, Mystery</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- @END_MAP )) -->
+                <!-- @END_COMPONENT: MovieGrid -->
+
+                <!-- Pagination -->
+                <!-- @COMPONENT: Pagination -->
+                <div class="flex items-center justify-center space-x-2">
+                    <button class="p-2 rounded-lg border border-cinema-dark text-cinema-silver hover:text-cinema-gold hover:border-cinema-gold transition-colors" data-event="click:previousPage">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    
+                    <div class="flex space-x-1">
+                        <button class="w-10 h-10 rounded-lg bg-cinema-burgundy text-white font-semibold" data-bind="currentPage">1</button>
+                        <button class="w-10 h-10 rounded-lg border border-cinema-dark text-cinema-silver hover:text-cinema-gold hover:border-cinema-gold transition-colors" data-event="click:goToPage">2</button>
+                        <button class="w-10 h-10 rounded-lg border border-cinema-dark text-cinema-silver hover:text-cinema-gold hover:border-cinema-gold transition-colors" data-event="click:goToPage">3</button>
+                        <span class="w-10 h-10 flex items-center justify-center text-cinema-silver">...</span>
+                        <button class="w-10 h-10 rounded-lg border border-cinema-dark text-cinema-silver hover:text-cinema-gold hover:border-cinema-gold transition-colors" data-event="click:goToPage" data-bind="totalPages">42</button>
+                    </div>
+                    
+                    <button class="p-2 rounded-lg border border-cinema-dark text-cinema-silver hover:text-cinema-gold hover:border-cinema-gold transition-colors" data-event="click:nextPage">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <!-- @END_COMPONENT: Pagination -->
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Movie Detail Modal -->
+    <!-- @COMPONENT: MovieDetailModal -->
+    <!-- @STATE: modalOpen:boolean = false -->
+    <div class="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4 hidden" data-bind="showModal" data-event="click:closeModal">
+        <div class="bg-cinema-charcoal rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+            
+            <!-- Modal Header -->
+            <div class="relative">
+                <!-- Movie theater screen showing film scenes -->
+                <img src="https://pixabay.com/get/g57a76aec80181884700660df305f2d7d0f5b98ad7a7911c20106aff2f56398a6241a49ee6e6c06d3844c8757dc2658b122a875804a5903105005dedd7344d11b_1280.jpg" 
+                    alt="Movie backdrop" 
+                    class="w-full h-64 object-cover rounded-t-2xl" 
+                    data-mock="true" 
+                    data-bind="movie.backdrop">
+                <div class="absolute inset-0 bg-gradient-to-t from-cinema-charcoal via-transparent to-transparent rounded-t-2xl"></div>
+                <button class="absolute top-4 right-4 w-10 h-10 bg-black bg-opacity-50 rounded-full flex items-center justify-center text-white hover:bg-opacity-75 transition-all" data-event="click:closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="p-8">
+                <div class="grid md:grid-cols-3 gap-8">
+                    
+                    <!-- Movie Poster -->
+                    <div class="md:col-span-1">
+                        <!-- Classic movie poster in vintage style -->
+                        <img src="https://pixabay.com/get/g99cfbddcd97b68347f873bef4a5529278271feaf25063b541f1cdb208638873a3b0202f462fe2875ac6a86f52406249250ea74a7725f425d14dfbbf933cb1b74_1280.jpg" 
+                            alt="Movie poster" 
+                            class="w-full rounded-xl shadow-2xl" 
+                            data-mock="true" 
+                            data-bind="movie.poster">
+                    </div>
+
+                    <!-- Movie Details -->
+                    <div class="md:col-span-2 space-y-6">
+                        
+                        <!-- Title and Rating -->
+                        <div>
+                            <h2 class="font-display text-3xl font-bold text-cinema-gold mb-2" data-bind="movie.title">The Dark Knight</h2>
+                            <div class="flex items-center space-x-4 text-cinema-cream">
+                                <span data-bind="movie.year">2008</span>
+                                <span>•</span>
+                                <span data-bind="movie.runtime">152 min</span>
+                                <span>•</span>
+                                <div class="flex items-center">
+                                    <i class="fas fa-star text-cinema-gold mr-1"></i>
+                                    <span data-bind="movie.rating">9.0</span>
+                                    <span class="text-cinema-silver ml-1">/10</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Genres -->
+                        <div class="flex flex-wrap gap-2" data-bind="movie.genres">
+                            <span class="bg-cinema-burgundy text-white px-3 py-1 rounded-full text-sm">Action</span>
+                            <span class="bg-cinema-burgundy text-white px-3 py-1 rounded-full text-sm">Crime</span>
+                            <span class="bg-cinema-burgundy text-white px-3 py-1 rounded-full text-sm">Drama</span>
+                        </div>
+
+                        <!-- Plot -->
+                        <div>
+                            <h3 class="font-semibold text-cinema-gold mb-2">Plot</h3>
+                            <p class="text-cinema-cream leading-relaxed" data-bind="movie.plot">
+                                When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.
+                            </p>
+                        </div>
+
+                        <!-- Cast -->
+                        <div>
+                            <h3 class="font-semibold text-cinema-gold mb-3">Cast</h3>
+                            <div class="grid grid-cols-2 gap-3" data-bind="movie.cast">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-cinema-dark rounded-full flex items-center justify-center">
+                                        <i class="fas fa-user text-cinema-silver"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-cinema-cream">Christian Bale</p>
+                                        <p class="text-sm text-cinema-silver">Bruce Wayne</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 bg-cinema-dark rounded-full flex items-center justify-center">
+                                        <i class="fas fa-user text-cinema-silver"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-cinema-cream">Heath Ledger</p>
+                                        <p class="text-sm text-cinema-silver">Joker</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button class="flex-1 bg-cinema-burgundy hover:bg-red-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors flex items-center justify-center" data-event="click:playTrailer">
+                                <i class="fas fa-play mr-2"></i>
+                                Watch Trailer
+                            </button>
+                            <button class="flex-1 border border-cinema-gold text-cinema-gold hover:bg-cinema-gold hover:text-cinema-black py-3 px-6 rounded-lg font-semibold transition-all flex items-center justify-center" data-event="click:addToWatchlist">
+                                <i class="fas fa-plus mr-2"></i>
+                                Add to Watchlist
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: MovieDetailModal -->
+
+    <!-- Footer -->
+    <footer class="bg-cinema-charcoal border-t border-cinema-dark mt-16">
+        <div class="container mx-auto px-4 lg:px-8 py-12">
+            <div class="grid md:grid-cols-4 gap-8">
+                
+                <!-- Company Info -->
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <i class="fas fa-film text-cinema-gold text-2xl"></i>
+                        <span class="font-display text-xl font-bold text-cinema-gold">CinemaVault</span>
+                    </div>
+                    <p class="text-cinema-silver leading-relaxed">
+                        Your premier destination for discovering and exploring the world's finest cinematic experiences.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-semibold text-cinema-cream mb-4">Browse</h4>
+                    <ul class="space-y-2 text-cinema-silver">
+                        <li><a href="#" class="hover:text-cinema-gold transition-colors">New Releases</a></li>
+                        <li><a href="#" class="hover:text-cinema-gold transition-colors">Top Rated</a></li>
+                        <li><a href="#" class="hover:text-cinema-gold transition-colors">Genres</a></li>
+                        <li><a href="#" class="hover:text-cinema-gold transition-colors">Classic Films</a></li>
+                    </ul>
+                </div>
+
+                <!-- Account -->
+                <div>
+                    <h4 class="font-semibold text-cinema-cream mb-4">Account</h4>
+                    <ul class="space-y-2 text-cinema-silver">
+                        <li><a href="#" class="hover:text-cinema-gold transition-colors">My Watchlist</a></li>
+                        <li><a href="#" class="hover:text-cinema-gold transition-colors">Recently Viewed</a></li>
+                        <li><a href="#" class="hover:text-cinema-gold transition-colors">Ratings</a></li>
+                        <li><a href="#" class="hover:text-cinema-gold transition-colors">Settings</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div>
+                    <h4 class="font-semibold text-cinema-cream mb-4">Support</h4>
+                    <ul class="space-y-2 text-cinema-silver">
+                        <li><a href="#" class="hover:text-cinema-gold transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-cinema-gold transition-colors">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-cinema-gold transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-cinema-gold transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="border-t border-cinema-dark mt-8 pt-8 flex flex-col md:flex-row md:items-center md:justify-between">
+                <p class="text-cinema-silver text-sm">
+                    © 2024 CinemaVault. All rights reserved.
+                </p>
+                <div class="flex space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="text-cinema-silver hover:text-cinema-gold transition-colors">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-cinema-silver hover:text-cinema-gold transition-colors">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-cinema-silver hover:text-cinema-gold transition-colors">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-cinema-silver hover:text-cinema-gold transition-colors">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // TODO: Implement movie data management, search functionality, filtering, and modal interactions
+        // TODO: Add responsive behavior for mobile navigation
+        // TODO: Implement API integration for movie data
+        // TODO: Add loading states and error handling
+        // TODO: Implement user authentication and watchlist management
+        
+        (function() {
+            // Simple modal toggle functionality for demonstration
+            const modalTriggers = document.querySelectorAll('[data-event*="openMovieDetail"]');
+            const modal = document.querySelector('[data-bind="showModal"]');
+            const closeButtons = document.querySelectorAll('[data-event*="closeModal"]');
+            
+            modalTriggers.forEach(trigger => {
+                trigger.addEventListener('click', function() {
+                    modal.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                });
+            });
+            
+            // Close modal on backdrop click
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        })();
+    </script>
+
+</body>
+</html>
